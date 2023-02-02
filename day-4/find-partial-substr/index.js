@@ -24,9 +24,9 @@ function matchPattern(pattern, str) {
     return activePattern.done
 }
 
-console.log(find('kbza', [
+console.log(find('qiu', [
     'kobezzza',
-    'bob',
+    'iuq',
     'kibiza',
-    'kobea'
+    'zprc'
 ])); // ['kobezzza', 'kibiza']
