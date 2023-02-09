@@ -2,42 +2,37 @@ class EventEmitter {
     #listenersMap = new Map();
 
     on(event, cb) {
-        const listeners = this.#listenersMap.get(event) ?? []
-        listeners.push({
-            link: cb,
-            listener(...args) {
-                cb.apply(this, args)
-            }
-        })
-        this.#listenersMap.set(event, listeners)
+        this.#getHandlers(event).add(cb);
     }
 
     once(event, cb) {
-        const listeners = this.#listenersMap.get(event) ?? []
-        listeners.push({
-            link: cb,
-            listener: (...args) => {
-                cb.apply(this, args)
-                this.off(event, cb)
-            }
-        })
-        this.#listenersMap.set(event, listeners)
+        const wrapper = (...args) => {
+            cb()
+            this.off(event, wrapper);
+        }
+        this.on(event, wrapper);
+        return () => this.off(event, wrapper);
     }
 
     off(event, cb) {
-        const listeners = this.#listenersMap.get(event) ?? []
-        const filteredListeners = listeners.filter((listener) => {
-            if (cb) {
-                return listener.link !== cb
-            }
-            return false;
-        })
-        this.#listenersMap.set(event, filteredListeners)
+        this.#getHandlers(event).delete(cb);
     }
 
-    emit(event, value) {
-        const listeners = this.#listenersMap.get(event) ?? [];
-        listeners.forEach((listener) => listener.listener(value))
+    emit(event, ...args) {
+        this.#getHandlers(event).forEach((handler) => {
+            handler(...args);
+        })
+    }
+
+    #getHandlers(event) {
+        let handlers = this.#listenersMap.get(event);
+
+        if (handlers === null) {
+            handlers = new Set();
+            this.#listenersMap.set(event, handlers);
+        }
+
+        return handlers;
     }
 }
 
