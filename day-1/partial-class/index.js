@@ -1,6 +1,6 @@
 function partial(cls, obj) {
     Object.setPrototypeOf(obj, cls.prototype.__proto__)
-    Object.defineProperties(Example.prototype, Object.getOwnPropertyDescriptors(obj))
+    Object.defineProperties(cls.prototype, Object.getOwnPropertyDescriptors(obj))
 }
 
 class Parent {

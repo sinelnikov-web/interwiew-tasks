@@ -6,17 +6,17 @@ function findFirstBadCommit(commits, comparator) {
     while (left < right) {
         if (comparator(commits[mid])) {
             left = mid + 1;
-            mid = Math.floor(left + (right - left) / 2);
         } else {
             right = mid - 1;
         }
         mid = Math.floor(left + (right - left) / 2);
+        console.log(mid, Math.floor((left + right) / 2));
     }
 
     return mid;
 }
 
-const commits = ['good', 'good', 'good', 'bad', 'bad', 'bad', 'bad', 'bad', 'bad'];
+const commits = ['good', 'good', 'bad', 'bad', 'bad', 'bad', 'bad', 'bad', 'bad'];
 
 const test = (commit) => commit === 'good';
 

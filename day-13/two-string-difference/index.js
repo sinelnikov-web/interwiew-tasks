@@ -17,7 +17,7 @@ function diff(str1, str2) {
         for (let j = 1; j < str2.length; j++) {
             let m = str1[i - 1] === str2[j - 1] ? 0 : 1;
             levensteinMatrix[i][j] = Math.min(
-                levensteinMatrix[i][j -1 ] +1,
+                levensteinMatrix[i][j -1 ] + 1,
                 levensteinMatrix[i - 1][j] + 1,
                 levensteinMatrix[i - 1][j - 1] + m
             )
